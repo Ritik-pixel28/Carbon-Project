@@ -1,1 +1,1 @@
-# Carbon-Project
+CarbonTrack is a web-based carbon footprint calculator that helps users measure the environmental impact of their daily activities. The platform evaluates transport usage, food consumption, and electricity usage to generate an estimated carbon emission score. It aims to create awareness and encourage more sustainable lifestyle choices.
