@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculate Impact - CarbonTrack</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">🌿 CarbonTrack</div>
+
+        <div class="nav-links">
+            <a href="index.html" class="btn-nav1">Dashboard</a>
+            <a href="calculate.html" class="btn-nav1 active">Calculate</a>
+            <a class="btn-nav">Login</a>
+
+            <button id="themeToggle" class="theme-btn">🌙</button>
+        </div>
+    </nav>
+
+    <div class="calc-container">
+        <h2>Calculate Your Carbon Emissions</h2>
+        <p>Enter your activity details below to measure your carbon footprint</p>
+
+        <form id="calcForm" class="calc-form">
+
+            <!-- TRANSPORT -->
+            <div class="form-section">
+                <h3>Transport</h3>
+                <label>Transport Mode</label>
+                <select id="transport">
+                    <option value="car">Car</option>
+                    <option value="bike">Bike</option>
+                    <option value="bus">Bus</option>
+                    <option value="train">Train</option>
+                </select>
+
+
+                <label>Distance (km)</label>
+                <input type="number" id="distance" placeholder="e.g., 20" required>
+
+                
+            </div>
+
+            <!-- FOOD -->
+            <div class="form-section">
+                <h3>Food</h3>
+                <label>Food Type</label>
+                <select id="food">
+                    <option value="veg">Vegetarian</option>
+                    <option value="mixed">Mixed Diet</option>
+                    <option value="meat">Meat Heavy</option>
+                </select>
+
+                <label>Meals(KG)</label>
+                <input type="number" id="meals" placeholder="e.g., 2" required>
+            </div>
+
+            <!-- ENERGY -->
+            <div class="form-section">
+                <h3>Electricity</h3>
+                <label>Electricity Used (kWh)</label>
+                <input type="number" id="electricity" placeholder="e.g., 5" required>
+            </div>
+            <p id="calcMessage" style="
+    margin: 10px 0; 
+    font-size: 1rem; 
+    color: #16a34a; 
+    font-weight: 600;
+    display: none;">
+</p>
+
+
+            <button type="submit" class="hero-btn primary calc-submit">
+                Calculate Emissions →
+            </button>
+        </form>
+
+    </div>
+
+    <script src="script2.js"></script>
+</body>
+</html>
