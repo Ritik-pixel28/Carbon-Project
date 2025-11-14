@@ -1,45 +1,33 @@
-// --- Global Data Store and Constants (Mocked for Client-Side) ---
 
-// Climatiq API Key (Stored in client-side JS for this example, should be on a server in production)
 const CLIMATIQ_API_KEY = "2B0WTRP0995J706DWV5D0RN30R";
 
-// Mock Emission Factors (Based on general estimates, replace with actual Climatiq data)
 const EMISSION_FACTORS = {
-    // Transport (kg CO2e per km)
-    car: 0.170, // Average passenger car
-    bus: 0.080, // Average bus
-    train: 0.040, // Average train
-    bike: 0.005, // Small factor for manufacturing/maintenance
-
-    // Food (kg CO2e per kg of food) - Simplified
-    veg: 1.5, // Plant-based diet factor
-    mixed: 3.0, // Mixed diet factor
-    meat: 7.0, // Meat-heavy diet factor
     
-    // Energy (kg CO2e per kWh) - Assuming a general mix factor
+    car: 0.170,
+    bus: 0.080, 
+    train: 0.040, 
+    bike: 0.005, 
+
+    
+    veg: 1.5, 
+    mixed: 3.0, 
+    meat: 7.0, 
+    
+    
     electricity: 0.400 
 };
 
-// Data structure to hold all tracked activities. This loads from storage.
+
 let activities = JSON.parse(localStorage.getItem('carbonActivities')) || [];
 
-// --- NEW FUNCTION: CLEAR ALL DATA ---
-/**
- * Clears all carbon activity data from localStorage and forces a page reload.
- * This is what resets the dashboard to zero.
- */
+
 function clearAllActivities() {
     localStorage.removeItem('carbonActivities');
-    // Also remove the theme preference to reset everything if desired, but we'll keep the theme.
-    // localStorage.removeItem('theme'); 
     
-    // Force a reload to re-run the dashboard logic with empty data
+    
+    
     window.location.reload();
 }
-// ------------------------------------
-
-
-// --- API MOCK FUNCTION ---
 
 /**
  * Mocks the API call to calculate CO2 emissions based on activity type and amount.
@@ -76,12 +64,12 @@ function calculateEmission(type, data) {
     return { co2e: 0, description: 'Error' };
 }
 
-// --- Dark/Light Theme Toggle ---
+
 
 const themeToggle = document.getElementById("themeToggle");
 
 if (themeToggle) {
-    // Set initial icon based on stored theme (or default to dark)
+    
     const initialTheme = document.documentElement.getAttribute("data-theme") || 'dark';
     themeToggle.textContent = initialTheme === "dark" ? "🌙" : "☀️";
 
@@ -100,7 +88,7 @@ if (themeToggle) {
     });
 }
 
-// Apply stored theme on load
+
 document.addEventListener('DOMContentLoaded', () => {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
@@ -112,26 +100,25 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// --- Dashboard / Index.html Logic ---
+
 
 let timelineChartInstance = null;
 let breakdownChartInstance = null;
 
 function updateDashboard() {
-    // 1. Calculate Totals
+   
     const totalCO2e = activities.reduce((sum, a) => sum + a.co2e, 0);
     const totalTransport = activities.filter(a => a.category === 'transport').reduce((sum, a) => sum + a.co2e, 0);
     const totalFood = activities.filter(a => a.category === 'food').reduce((sum, a) => sum + a.co2e, 0);
     const totalEnergy = activities.filter(a => a.category === 'energy').reduce((sum, a) => sum + a.co2e, 0);
     
     const activitiesCount = activities.length;
-    // Calculate days tracked from the first activity log if available
+   
     const oldestActivity = activities.length > 0 ? activities[0].id : Date.now();
     const daysSinceFirstLog = Math.ceil((Date.now() - oldestActivity) / (1000 * 60 * 60 * 24));
-    const daysTracked = Math.max(1, daysSinceFirstLog); // Ensure at least 1 day for division
+    const daysTracked = Math.max(1, daysSinceFirstLog); 
     const dailyAverage = totalCO2e / daysTracked;
-    
-    // 2. Update Dashboard Summary Cards
+
     const co2eElement = document.querySelector('.dash-card:nth-child(1) .value');
     if (co2eElement) co2eElement.textContent = `${totalCO2e.toFixed(2)} kg`;
 
@@ -141,7 +128,7 @@ function updateDashboard() {
     const activitiesLoggedElement = document.querySelector('.dash-card:nth-child(3) .value');
     if (activitiesLoggedElement) activitiesLoggedElement.textContent = activitiesCount;
 
-    // 3. Update Category Cards
+    
     const transportCard = document.querySelector('.dash-card.transport .value');
     const foodCard = document.querySelector('.dash-card.food .value');
     const energyCard = document.querySelector('.dash-card.energy .value');
@@ -150,7 +137,7 @@ function updateDashboard() {
     if (foodCard) foodCard.textContent = `${totalFood.toFixed(2)} kg`;
     if (energyCard) energyCard.textContent = `${totalEnergy.toFixed(2)} kg`;
 
-    // Update percentage (simplification)
+   
     const updatePercent = (selector, total) => {
         const percent = totalCO2e > 0 ? (total / totalCO2e) * 100 : 0;
         const smallEl = document.querySelector(selector).nextElementSibling;
@@ -162,10 +149,10 @@ function updateDashboard() {
     updatePercent('.dash-card.energy .value', totalEnergy);
 
 
-    // 4. Update Activity History (using the new ID from the previous fix)
+    
     const historySection = document.getElementById('activityHistoryBox');
     if (historySection) {
-        // Ensure the header is always present
+       
         historySection.innerHTML = `<h3 class="box-header">Activity History</h3>`; 
 
         const historyHTML = activities.length > 0
@@ -175,7 +162,6 @@ function updateDashboard() {
         historySection.innerHTML += historyHTML;
     }
 
-    // 5. Update Charts
     updateTimelineChart();
     updateBreakdownChart(totalTransport, totalFood, totalEnergy);
 }
@@ -189,38 +175,38 @@ function updateTimelineChart() {
         timelineChartInstance.destroy();
     }
     
-    // MOCK DATA for the timeline chart for a 7-day view
+    
     const mockTimelineData = {
         'Transport': [2.5, 3.1, 2.0, 4.5, 3.0, 5.2, 3.8],
         'Food': [1.5, 1.8, 1.3, 2.0, 1.7, 2.5, 2.1],
         'Energy': [0.8, 0.9, 0.7, 1.0, 0.9, 1.1, 1.0]
     };
 
-    // Extracting data for the chart. Since we don't have dates, we plot them sequentially.
+    
     const transportData = activities.filter(a => a.category === 'transport').map(a => a.co2e);
     const foodData = activities.filter(a => a.category === 'food').map(a => a.co2e);
     const energyData = activities.filter(a => a.category === 'energy').map(a => a.co2e);
     
     const allData = activities.map(a => a.co2e);
 
-    // Fallback to mock data or empty if no real data
+    
     const chartData = activities.length > 0 ? {
-        // Plot all emissions points sequentially
+       
         labels: activities.map((a, i) => `${a.category.slice(0, 1).toUpperCase()}${i + 1}`),
         datasets: [
-            // Combine all points into a single dataset for a true 'timeline' look based on entry order
+            
             { 
                 label: "Total Emissions per Entry", 
                 data: allData, 
                 borderColor: "#16a34a", 
                 tension: 0.3, 
                 fill: false,
-                backgroundColor: 'rgba(22, 163, 74, 0.5)' // Green fill under the line
+                backgroundColor: 'rgba(22, 163, 74, 0.5)' 
             }
-            // If you want separate lines for Transport/Food/Energy, the array lengths must match the labels.
+           
         ]
     } : {
-        // Use 7-day mock data if no activities logged
+        
         labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"],
         datasets: [
             { label: "Transport (Mock)", data: mockTimelineData.Transport, borderColor: "#16a34a", tension: 0.3, fill: false },
@@ -253,24 +239,24 @@ function updateBreakdownChart(transport, food, energy) {
     const breakdownCanvasId = "breakdownChart";
     let canvasEl = document.getElementById(breakdownCanvasId);
 
-    // If a chart instance exists, destroy it
+   
     if (breakdownChartInstance) {
         breakdownChartInstance.destroy();
     }
 
     const total = transport + food + energy;
 
-    // Check if we have data to display
+    
     if (total > 0) {
-        // Remove empty message if it exists
+        
         const emptyMsg = breakdownBox.querySelector('.empty-msg');
         if (emptyMsg) emptyMsg.remove();
 
-        // Create canvas if it doesn't exist or was removed
+       
         if (!canvasEl) {
             canvasEl = document.createElement('canvas');
             canvasEl.id = breakdownCanvasId;
-            // Clear any non-canvas content before appending the canvas
+           
             if (!breakdownBox.querySelector('.box-header')) {
                  breakdownBox.innerHTML = `<div class="box-header"><h3>Category Breakdown</h3></div>`;
             } else if (breakdownBox.children.length === 1) {
@@ -285,16 +271,16 @@ function updateBreakdownChart(transport, food, energy) {
                 label: 'CO₂e Contribution (kg)',
                 data: [transport, food, energy],
                 backgroundColor: [
-                    '#16a34a', // green
-                    '#facc15', // yellow
-                    '#3b82f6'  // blue
+                    '#16a34a', 
+                    '#facc15', 
+                    '#3b82f6'  
                 ],
                 hoverOffset: 4
             }]
         };
 
         breakdownChartInstance = new Chart(canvasEl, {
-            type: 'bar', // Using bar chart as requested
+            type: 'bar', 
             data: data,
             options: {
                 responsive: true,
@@ -319,7 +305,7 @@ function updateBreakdownChart(transport, food, energy) {
             }
         });
     } else {
-        // Display empty message and remove chart canvas if data is empty
+        
         if (canvasEl) canvasEl.remove();
         if (!breakdownBox.querySelector('.empty-msg')) {
              breakdownBox.innerHTML = `<div class="box-header"><h3>Category Breakdown</h3></div><p class="empty-msg">No data available yet.<br>Start tracking activities to see your breakdown.</p>`;
@@ -328,15 +314,15 @@ function updateBreakdownChart(transport, food, energy) {
 }
 
 
-// Call updateDashboard when the index page loads
+
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.title.includes('CarbonTrack')) { // Check if it's the index.html page
+    if (document.title.includes('CarbonTrack')) { 
         updateDashboard();
     }
 });
 
 
-// --- Chip Button Logic (Original, kept for completeness) ---
+
 
 const chipButtons = document.querySelectorAll('.chip');
 
@@ -352,20 +338,20 @@ chipButtons.forEach(button => {
 });
 
 
-// --- Calculate.html Logic (API Integration) ---
+
 
 const form = document.getElementById("calcForm");
 
 
-// NEW
+
 if (form) {
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const msgBox = document.getElementById("calcMessage");
-        msgBox.style.display = "none"; // reset message
+        msgBox.style.display = "none"; 
 
-        // 1. Get form data
+       
         const transportMode = document.getElementById("transport").value;
         const distance = document.getElementById("distance").value;
         const foodType = document.getElementById("food").value;
@@ -374,7 +360,7 @@ if (form) {
 
         let newActivities = [];
 
-        // 2. Calculate emissions
+        
         if (distance > 0) {
             const data = { mode: transportMode, distance };
             const { co2e, description } = calculateEmission("transport", data);
@@ -393,18 +379,18 @@ if (form) {
             newActivities.push({ id: Date.now() + 2, category: "energy", data, co2e, description });
         }
 
-        // 3. Save and display message
+        
         if (newActivities.length > 0) {
             activities = [...activities, ...newActivities];
             localStorage.setItem("carbonActivities", JSON.stringify(activities));
 
             const total = newActivities.reduce((sum, a) => sum + a.co2e, 0).toFixed(2);
 
-            // Show message above button
+           
             msgBox.innerHTML = `Total emissions added: <b>${total} kg CO₂e</b>`;
             msgBox.style.display = "block";
 
-            // Redirect to dashboard after 1.5 seconds
+            
             setTimeout(() => {
                 window.location.href = "index.html";
             }, 1500);
