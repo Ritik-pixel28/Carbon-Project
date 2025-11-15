@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarbonTrack</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo"><a href="index.html" class="logo">🌿 CarbonTrack</a></div>
+
+        <div class="nav-links">
+            <a class="btn-nav">Dashboard</a>
+            <!-- <a class="btn-nav">Calculate</a> -->
+             <a href="calculate.html" class="btn-nav1">Calculate</a>
+             <a href="login.html" class="btn-nav1">Login</a>
+            <!-- <a class="btn-nav">Login</a> -->
+
+            <button id="themeToggle" class="theme-btn">🌙</button>
+        </div>
+    </nav>
+
+    <!-- IMAGE CONTENT -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <span class="badge">🌱 Environmental Impact Tracker</span>
+
+            <h1 class="hero-title">Measure Your Carbon Footprint</h1>
+
+            <p class="hero-desc">
+                Track your daily environmental impact from transport, food, and energy use
+            </p>
+
+            <p class="hero-sub">Average person: <b>16 tons CO₂/year</b></p>
+
+            <div class="hero-buttons">
+                <!-- <button class="hero-btn primary">Calculate Your Impact →</button> -->
+            <button class="hero-btn primary" onclick="window.location.href='calculate.html'">
+    Calculate Your Impact →</button>
+
+            <button class="hero-btn secondary">View Dashboard</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <div class="content">
+
+        <!-- DASHBOARD HEADER -->
+        <!-- <section class="dashboard-header">
+            <h2>Your Carbon Dashboard</h2>
+            <p>Track and analyze your environmental impact</p>
+        </section> -->
+
+        <section class="dashboard-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h2>Your Carbon Dashboard</h2>
+                <button 
+                    class="hero-btn secondary" 
+                    onclick="clearAllActivities()" 
+                    style="padding: 8px 18px; font-size: 0.9rem; margin-top: -10px;">
+                    Reset All Data
+                </button>
+            </div>
+            <p>Track and analyze your environmental impact</p>
+        </section>
+
+        <!-- TOP SUMMARY CARDS -->
+        <div class="card-row">
+            <div class="dash-card">
+                <h3>Total CO₂e</h3>
+                <p class="value">0.00 kg</p>
+                <small>0.0% vs global average</small>
+            </div>
+
+            <div class="dash-card">
+                <h3>Daily Average</h3>
+                <p class="value">0.00 kg</p>
+                <small>Per day CO₂ emissions</small>
+            </div>
+
+            <div class="dash-card">
+                <h3>Activities Logged</h3>
+                <p class="value">0</p>
+                <small>Total tracked activities</small>
+            </div>
+        </div>
+
+        <!-- CATEGORY CARDS -->
+        <div class="card-row">
+            <div class="dash-card transport">
+                <h3>Transport</h3>
+                <p class="value green">0.00 kg</p>
+                <small>0% of total</small>
+            </div>
+
+            <div class="dash-card food">
+                <h3>Food</h3>
+                <p class="value yellow">0.00 kg</p>
+                <small>0% of total</small>
+            </div>
+
+            <div class="dash-card energy">
+                <h3>Energy</h3>
+                <p class="value blue">0.00 kg</p>
+                <small>0% of total</small>
+            </div>
+        </div>
+
+        <!-- TIMELINE + BREAKDOWN -->
+        <div class="dual-box">
+            
+            <!-- TIMELINE -->
+            <section class="box">
+                <div class="box-header">
+                    <h3>Emissions Timeline</h3>
+                    <!-- <div class="btn-group">
+                        <button class="chip">7 Days</button>
+                        <button class="chip">30 Days</button>
+                    </div> -->
+                </div>
+                <canvas id="timelineChart"></canvas>
+            </section>
+
+            <!-- CATEGORY BREAKDOWN -->
+            <section class="box">
+                <div class="box-header">
+                    <h3>Category Breakdown</h3>
+                </div>
+                <p class="empty-msg">No data available yet.<br>Start tracking activities to see your breakdown.</p>
+            </section>
+
+        </div>
+<br>
+<br>
+        <!-- ACTIVITY HISTORY -->
+        <section class="box" id="activityHistoryBox">
+            <h3 class="box-header">Activity History</h3>
+            <p class="empty-msg">No activities tracked yet</p>
+        </section>
+
+    </div>
+    <!-- --------------- -->
+
+     <!-- BLOGS SECTION -->
+<section class="blogs">
+  <h3>Blogs</h3>
+  <div class="blogs-grid">
+    <a class="blog-card" href="https://www.ecoflow.com/us/blog/how-to-reduce-carbon-footprint-at-home" target="_blank">
+      <h4>How to Reduce Your Carbon Footprint at Home</h4>
+      <p>Discover simple lifestyle changes that make a big environmental impact.</p>
+    </a>
+    <a class="blog-card" href="https://ecobnb.com/blog/2025/08/no-car-save-money-travel-green-alternative-transport/" target="_blank">
+      <h4>Sustainable Commuting: Green Travel Alternatives</h4>
+      <p>Explore eco-friendly ways to commute that cut carbon and cost.</p>
+    </a>
+    <a class="blog-card" href="https://chelal.com/en/blog/did-you-know-food-production-responsible-more-20-global-co2-emissions" target="_blank">
+      <h4>The Truth About Food & CO₂ Emissions</h4>
+      <p>A look at how our diets affect the planet and what you can do.</p>
+    </a>
+    <a class="blog-card" href="https://blogs.adb.org/blog/smart-tech-green-power-digital-growth-needs-energy-efficiency-and-clean-power" target="_blank">
+      <h4>Energy Use in the Digital Age: What You Should Know</h4>
+      <p>Understanding how everyday electricity use adds up — and how to reduce it.</p>
+    </a>
+  </div>
+</section>
+    <!-- --------------- -->
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h4>About CarbonTrack</h4>
+                <p>Helping individuals understand and reduce their environmental impact through data-driven insights.</p>
+            </div>
+
+            <div>
+                <h4>Data Sources</h4>
+                <p>Climatiq API - Emission Factors</p>
+            </div>
+
+            <div>
+                <h4>Links</h4>
+                <p>About • Privacy Policy • Contact</p>
+            </div>
+        </div>
+<BR>
+<BR>
+        <p class="footer-love" style="border-top: 5px solid black; display: flex; align-items: center; justify-content: center;">
+            Made with ❤️ for a sustainable future
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script2.js"></script>
+</body>
+</html>
